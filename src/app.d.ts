@@ -9,14 +9,14 @@ declare namespace App {
 	// interface Stuff {}
 }
 
-export type FuturesCoinType = 'perpetual' | 'future' | 'prediction' | 'move';
-export type FuturesCoinGroup = 'perpetual' | 'quarterly' | 'prediction';
+export type FuturesMarketType = 'perpetual' | 'future' | 'prediction' | 'move';
+export type FuturesMarketGroup = 'perpetual' | 'quarterly' | 'prediction';
 
-export interface FuturesCoin {
+export interface FuturesMarket {
 	name: string;
 	underlying: string;
 	description: string;
-	type: FuturesCoinType;
+	type: FuturesMarketType;
 	expiry: null | string;
 	perpetual: boolean;
 	expired: false;
@@ -37,7 +37,7 @@ export interface FuturesCoin {
 	moveStart: null;
 	marginPrice: number;
 	positionLimitWeight: number;
-	group: FuturesCoinGroup;
+	group: FuturesMarketGroup;
 	change1h: number;
 	change24h: number;
 	changeBod: number;
@@ -45,4 +45,44 @@ export interface FuturesCoin {
 	volume: number;
 	openInterest: number;
 	openInterestUsd: number;
+}
+
+export enum marketType {
+	Future = "future",
+	Spot = "spot",
+}
+
+export interface spotMarket {
+	name: string;
+	enabled: boolean;
+	postOnly: boolean;
+	priceIncrement: number;
+	sizeIncrement: number;
+	minProvideSize: number;
+	last?: number;
+	bid?: number;
+	ask?: number;
+	price?: number;
+	type: marketType;
+	futureType: string;
+	baseCurrency: string;
+	isEtfMarket: boolean;
+	quoteCurrency: string;
+	underlying: string;
+	restricted: boolean;
+	highLeverageFeeExempt: boolean;
+	largeOrderThreshold: number;
+	change1h: number;
+	change24h: number;
+	changeBod: number;
+	quoteVolume24h: number;
+	volumeUsd24h: number;
+	priceHigh24h: number;
+	priceLow24h: number;
+	tokenizedEquity?: boolean;
+}
+
+export interface FutureWithSpot {
+	future: FuturesMarket,
+	spot: spotMarket
 }
