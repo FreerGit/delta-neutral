@@ -30,3 +30,17 @@ ipsum
 - [ ] binance  
 - [ ] bybit  
 - [ ] phemex?  
+
+## Decisions on UI
+DaisyUI - halloween theme
+table -> "Table with visual elements"
+range -> "primary color" (for refresh rate)
+checkbox -> "primary color" (to choose boolean, exchanges etc)
+toggle -> w/e (refresh or no)
+tooltip -> "hover" to explain all concepts etc
+
+on futures with spot:
+Basis: picture of exchange, name, expiry, apy, fut price, spot price, delta, trade_setup(hover)
+
+on perp with spot:
+Funding: picture of exchange, name, apy, perp price, spot price, delta, trade_setup(hover)
