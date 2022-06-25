@@ -52,6 +52,18 @@ export enum marketType {
 	Spot = "spot",
 }
 
+export enum QuoteCurrency {
+	Aud = "AUD",
+	Brz = "BRZ",
+	Btc = "BTC",
+	Doge = "DOGE",
+	Eur = "EUR",
+	Jpy = "JPY",
+	Tryb = "TRYB",
+	Usd = "USD",
+	Usdt = "USDT",
+}
+
 export interface spotMarket {
 	name: string;
 	enabled: boolean;
@@ -67,7 +79,7 @@ export interface spotMarket {
 	futureType: string;
 	baseCurrency: string;
 	isEtfMarket: boolean;
-	quoteCurrency: string;
+	quoteCurrency?: QuoteCurrency;
 	underlying: string;
 	restricted: boolean;
 	highLeverageFeeExempt: boolean;
