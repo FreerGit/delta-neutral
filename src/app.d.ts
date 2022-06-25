@@ -17,7 +17,7 @@ export interface FuturesMarket {
 	underlying: string;
 	description: string;
 	type: FuturesMarketType;
-	expiry: null | string;
+	expiry: undefined | string;
 	perpetual: boolean;
 	expired: false;
 	enabled: true;
@@ -48,20 +48,20 @@ export interface FuturesMarket {
 }
 
 export enum marketType {
-	Future = "future",
-	Spot = "spot",
+	Future = 'future',
+	Spot = 'spot'
 }
 
 export enum QuoteCurrency {
-	Aud = "AUD",
-	Brz = "BRZ",
-	Btc = "BTC",
-	Doge = "DOGE",
-	Eur = "EUR",
-	Jpy = "JPY",
-	Tryb = "TRYB",
-	Usd = "USD",
-	Usdt = "USDT",
+	Aud = 'AUD',
+	Brz = 'BRZ',
+	Btc = 'BTC',
+	Doge = 'DOGE',
+	Eur = 'EUR',
+	Jpy = 'JPY',
+	Tryb = 'TRYB',
+	Usd = 'USD',
+	Usdt = 'USDT'
 }
 
 export interface spotMarket {
@@ -95,6 +95,25 @@ export interface spotMarket {
 }
 
 export interface FutureWithSpot {
-	future: FuturesMarket,
-	spot: spotMarket
+	future: exchangeFutureDataT;
+	spot: exchangeSpotDataT;
+}
+
+export type exchangeType = 'ftx' | 'binance' | 'bybit';
+export type futureType = 'perpetual' | 'future';
+
+export interface exchangeFutureDataT {
+	exchange: exchangeType;
+	name: string;
+	type: futureType;
+	price: number;
+	expiry: string | undefined;
+	underlying: string;
+}
+
+export interface exchangeSpotDataT {
+	exchange: exchangeType;
+	name: string;
+	price: number;
+	underlying: string;
 }
