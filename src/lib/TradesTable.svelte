@@ -68,52 +68,68 @@
 	}
 	let allTradeRows: rowType[] = [];
 	onMount(async () => {
-		console.log(propValue);
-		allTradeRows = splitByTradeIdea(propValue);
+		allTradeRows = splitByTradeIdea(propValue).sort(
+			(a: rowType, b: rowType) => a.apy < b.apy
+		);
 	});
 </script>
 
 <div class="overflow-hidden h-full w-full">
-	{#each allTradeRows as row}
-		<table class="table w-full ">
-			<!-- head -->
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>Job</th>
-					<th>Favorite Color</th>
-					<th />
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
+	<table class="table w-full">
+		<!-- head -->
+		<thead>
+			<tr class="text-center">
+				<th class="bg-secondary">Market</th>
+				<th class="bg-secondary">apy</th>
+				<th class="bg-secondary">Future price</th>
+				<th class="bg-secondary">Spot price</th>
+				<th class="bg-secondary">Δ</th>
+				<th class="bg-secondary">Trade Info</th>
+			</tr>
+		</thead>
+		{#each allTradeRows as row}
+			<tbody class="border-b">
+				<tr class="text-center">
 					<td>
-						<div class="flex items-center space-x-3">
-							<div class="avatar">
-								<div class="w-5">
+						<div class="flex pl-3 space-x-3">
+							<div class="w-5">
+								{#if row.exchange == 'ftx'}
 									<FtxLogo />
-								</div>
+								{:else if row.exchange == 'binance'}
+									<p>fdafsd</p>
+								{:else if row.exchange == 'bybit'}
+									<p>fdafsd</p>
+								{/if}
 							</div>
-							<div>
-								<div class="font-bold">Hart Hagerty</div>
-								<div class="text-sm opacity-50">United States</div>
+							<div class="items-center">
+								<div class="font-bold">{row.name}</div>
 							</div>
 						</div>
 					</td>
-					<td>
-						Zemlak, Daniel and Leannon
-						<br />
-						<span class="badge badge-ghost badge-sm"
-							>Desktop Support Technician</span
+					<td>{parseFloat(row.apy.toFixed(5))}</td>
+					<td>{row.fut_price}</td>
+					<td>{row.spot_price}</td>
+					<td>{parseFloat(row.delta.toFixed(5))}</td>
+					<div class="container py-3">
+						<label for="my-modal-4" class="btn btn-sm btn-outline modal-button"
+							>Details</label
 						>
-					</td>
-					<td>Purple</td>
-					<th>
-						<button class="btn btn-ghost btn-xs">details</button>
-					</th>
+						<input type="checkbox" id="my-modal-4" class="modal-toggle" />
+						<label for="my-modal-4" class="modal cursor-pointer">
+							<label class="modal-box relative" for="">
+								<h3 class="text-lg font-bold">
+									Congratulations random Interner user!
+								</h3>
+								<p class="py-4">
+									You've been selected for a chance to get one year of
+									subscription to use Wikipedia for free!
+								</p>
+							</label>
+						</label>
+					</div>
 				</tr>
 				<!-- row 1 -->
 			</tbody>
-		</table>
-	{/each}
+		{/each}
+	</table>
 </div>
