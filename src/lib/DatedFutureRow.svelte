@@ -27,22 +27,40 @@
 		<td>{row_info.fut_price}</td>
 		<td>{row_info.spot_price}</td>
 		<div class="container py-3">
-			<label for="my-modal-4" class="btn btn-sm btn-outline modal-button"
+			<label for={row_info.name} class="btn btn-sm btn-outline modal-button"
 				>Details</label
 			>
-			<input type="checkbox" id="my-modal-4" class="modal-toggle" />
-			<label for="my-modal-4" class="modal cursor-pointer">
+			<input type="checkbox" id={row_info.name} class="modal-toggle" />
+			<label for={row_info.name} class="modal cursor-pointer">
 				<label class="modal-box relative" for="">
-					<h3 class="text-lg font-bold">
-						Congratulations random Interner user!
-					</h3>
-					<p class="py-4">
-						You've been selected for a chance to get one year of subscription to
-						use Wikipedia for free!
-					</p>
+					<h3 class="text-xl font-bold">How to perform this basis trade:</h3>
+					{#if row_info.delta < 0.0}
+						<p class="">tldr: margin short spot, long the future</p>
+						<p class="py-4">
+							Since Delta is negative (The futures price is less than the
+							underlyings spot price) to capture the spread you need to margin
+							short spot and long the future. Then hold that position until
+							either maturity or the two prices converge.
+						</p>
+						<p class="underline">
+							note that no fees or margin payments were taken into account,
+							please take liquidation risk into account.
+						</p>
+					{:else}
+						<p class="">tldr: buy spot, short the future</p>
+						<p class="py-4">
+							Since Delta is positive (The futures price is greater than the
+							underlyings spot price) to capture the spread you need to buy spot
+							and short the future. Then hold that position until either
+							maturity or the two prices converge.
+						</p>
+						<p class="underline">
+							note that no fees or margin payments were taken into account,
+							please take liquidation risk into account.
+						</p>
+					{/if}
 				</label>
 			</label>
 		</div>
 	</tr>
-	<!-- row 1 -->
 </tbody>
