@@ -40,31 +40,52 @@
 	}
 
 	import { writable } from 'svelte/store';
-
 	const table_type = writable({ type: 'future' as futureType });
+	const refresh_rate = writable({ hz: 1 });
 </script>
 
 <div class="h-screen w-full">
 	<div class="p-16">
-		<div class="pb-4">
-			Dated Futures (Basis trade)
-			<input
-				type="radio"
-				name="radio-3"
-				class="radio radio-secondary"
-				bind:group={$table_type.type}
-				value={'future'}
-				checked
-			/>
-			<br />
-			Collect funding (Perpetuals)
-			<input
-				type="radio"
-				name="radio-3"
-				class="radio radio-secondary pb-2"
-				bind:group={$table_type.type}
-				value={'perpetual'}
-			/>
+		<div class="grid justify-items-stretch">
+			<div class="grid grid-cols-2">
+				<div class="flex justify-between py-1 w-4/6">
+					<p class="col-xs-2">Dated Futures (Basis trade)</p>
+					<input
+						type="radio"
+						name="radio-3"
+						class="radio radio-secondary pb-2"
+						bind:group={$table_type.type}
+						value={'future'}
+						checked
+					/>
+				</div>
+				<p class="flex justify-end pr-10">
+					refresh rate: {$refresh_rate.hz}m
+				</p>
+			</div>
+			<!-- <br /> -->
+			<div class="grid grid-cols-2">
+				<div class="flex justify-between py-1 w-4/6">
+					<p>Perpetuals (Collect funding)</p>
+					<input
+						type="radio"
+						name="radio-3"
+						class="radio radio-secondary"
+						bind:group={$table_type.type}
+						value={'perpetual'}
+					/>
+				</div>
+				<div class="flex justify-end py-2">
+					<input
+						type="range"
+						min="1"
+						max="60"
+						bind:value={$refresh_rate.hz}
+						class="range range-secondary range-xs w-1/2"
+					/>
+				</div>
+				<!-- </div> -->
+			</div>
 		</div>
 		{#await getFuturesWithSpotMarkets()}
 			<div class="flex items-center justify-center h-24">

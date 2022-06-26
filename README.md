@@ -15,12 +15,11 @@ ipsum
 - [ ] Dockerize
 - [ ] "How to use"
 - [ ] "How to build and run"
-- [ ] draw UI skeleton
-- [ ] simple css work for UI outline
+- [x] draw UI skeleton
+- [x] simple css work for UI outline
 - [ ] picture per exchange
-- [ ] calculate basis trade
-  - [ ] info button with explanation (what to short, what to long etc)
-- [ ] calculate "collect funding"
+- [x] calculate basis trade
+  - [x] info button with explanation (what to short, what to long etc)
 - [ ] Picture per exchange
 - [ ] Template for future/perp data (general for diff exchanges)
 - [ ] Settings
@@ -30,7 +29,7 @@ ipsum
   - [ ] exchange list
   - [ ] show all the same pair from all exchanges or best one
 - [ ] top 25 default
-- [ ] ftx
+- [x] ftx
 - [ ] binance
 - [ ] bybit
 - [ ] phemex?
