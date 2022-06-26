@@ -8,7 +8,6 @@
 	import { onMount } from 'svelte';
 	import PerpRow from './PerpRow.svelte';
 	import DatedFutureRow from './DatedFutureRow.svelte';
-	import FtxLogo from '/static/ftx.svg';
 
 	export let propValue: FutureWithSpot[];
 	export let perp_or_dated: futureType;
@@ -32,10 +31,6 @@
 		}
 	}
 
-	function set_trade_info(bundle: FutureWithSpot): string {
-		return 'fdsfsd';
-	}
-
 	function splitByTradeIdea(
 		bundles: FutureWithSpot[]
 	): [datedFutureRowType[], perpRowType[]] {
@@ -54,8 +49,7 @@
 					apy: apy,
 					fut_price: fut.price,
 					spot_price: spot.price,
-					delta: delta,
-					trade_setup_info: set_trade_info(bundle)
+					delta: delta
 				} as datedFutureRowType);
 			} else if (fut.type == 'perpetual') {
 				let freq = 'hourly';
@@ -76,8 +70,7 @@
 					funding_rate: fut.funding_rate,
 					frequency: freq,
 					fut_price: fut.price,
-					spot_price: spot.price,
-					trade_setup_info: set_trade_info(bundle)
+					spot_price: spot.price
 				} as perpRowType);
 			} else {
 				throw 'Future is not perp or dated';
@@ -91,15 +84,16 @@
 	onMount(async () => {
 		let [dated, perps] = splitByTradeIdea(propValue);
 		datedFutureTradeRows = dated.sort(
-			(a: rowType, b: rowType) => Math.abs(a.apy) < Math.abs(b.apy)
+			(a: datedFutureRowType, b: datedFutureRowType) =>
+				Math.abs(b.apy) - Math.abs(a.apy)
 		);
 		perpTradeRows = perps.sort(
-			(a, b) => Math.abs(a.funding_rate) < Math.abs(b.funding_rate)
+			(a, b) => Math.abs(b.funding_rate) - Math.abs(a.funding_rate)
 		);
 	});
 </script>
 
-<div class="overflow-hidden h-full w-full">
+<div class="overflow-hidden h-full w-full py-2">
 	<table class="table w-full">
 		<!-- head -->
 		<thead>

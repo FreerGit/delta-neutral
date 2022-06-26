@@ -120,9 +120,9 @@ export interface exchangeSpotDataT {
 }
 
 export interface fundingRate {
-	future: string,
-	rate: number,
-	time: string,
+	future: string;
+	rate: number;
+	time: string;
 }
 
 interface datedFutureRowType {
@@ -134,10 +134,9 @@ interface datedFutureRowType {
 	fut_price: number;
 	spot_price: number;
 	delta: number;
-	trade_setup_info: string;
 }
 
-export type fundingFrequency = "hourly" | "8 hours"
+export type fundingFrequency = 'hourly' | '8 hours';
 
 interface perpRowType {
 	exchange: string;
@@ -146,5 +145,4 @@ interface perpRowType {
 	frequency: fundingFrequency;
 	fut_price: number;
 	spot_price: number;
-	trade_setup_info: string;
 }

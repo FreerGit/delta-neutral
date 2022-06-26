@@ -8,7 +8,7 @@
 	<tr class="text-center">
 		<td>
 			<div class="flex pl-3 space-x-3">
-				<div class="w-5">
+				<div class="flex w-5 justify-center">
 					{#if row_info.exchange == 'ftx'}
 						<FtxLogo />
 					{:else if row_info.exchange == 'binance'}
@@ -35,12 +35,12 @@
 				<label class="modal-box relative" for="">
 					<h3 class="text-xl font-bold">How to perform this basis trade:</h3>
 					{#if row_info.delta < 0.0}
-						<p class="">tldr: margin short spot, long the future</p>
+						<p class="">tldr: short spot/perp, long the future</p>
 						<p class="py-4">
 							Since Delta is negative (The futures price is less than the
 							underlyings spot price) to capture the spread you need to margin
-							short spot and long the future. Then hold that position until
-							either maturity or the two prices converge.
+							short spot or short perp and long the future. Then hold that
+							position until either maturity or the two prices converge.
 						</p>
 						<p class="underline">
 							note that no fees or margin payments were taken into account,

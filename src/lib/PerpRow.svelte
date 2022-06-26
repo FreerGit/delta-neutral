@@ -8,7 +8,7 @@
 	<tr class="text-center">
 		<td>
 			<div class="flex pl-3 space-x-3">
-				<div class="w-5">
+				<div class="flex w-5 justify-center">
 					{#if row_info.exchange == 'ftx'}
 						<FtxLogo />
 					{:else if row_info.exchange == 'binance'}

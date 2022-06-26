@@ -12,7 +12,6 @@
 	): FutureWithSpot[] {
 		let bundle: FutureWithSpot[] = [];
 		const length = futures.length;
-		console.log(futures);
 		for (let num = 0; num < length; num++) {
 			let future_underlying = futures[num].underlying;
 			let foundSpot = spotMarkets.find((spot: exchangeSpotDataT) => {
@@ -40,8 +39,32 @@
 	}
 
 	import { writable } from 'svelte/store';
+	import { onMount } from 'svelte';
+
+	let futures_with_spot_markets = getFuturesWithSpotMarkets();
+
+	function everyTime() {
+		console.log('each 1 second...');
+		futures_with_spot_markets = getFuturesWithSpotMarkets();
+		// invalidate(futuresWithSpotMarkets);
+	}
 	const table_type = writable({ type: 'future' as futureType });
-	const refresh_rate = writable({ hz: 1 });
+	const refresh_rate = writable(1);
+	const milliseconds_per_minute = 60000;
+	let refresh_interval_f: any;
+
+	onMount(async () => {
+		let update_timer = () => {
+			clearInterval(refresh_interval_f);
+			refresh_interval_f = setInterval(
+				everyTime,
+				$refresh_rate * milliseconds_per_minute
+			);
+		};
+		refresh_rate.subscribe(() => {
+			update_timer();
+		});
+	});
 </script>
 
 <div class="h-screen w-full">
@@ -60,10 +83,10 @@
 					/>
 				</div>
 				<p class="flex justify-end pr-10">
-					refresh rate: {$refresh_rate.hz}m
+					refresh rate: {$refresh_rate}m
 				</p>
 			</div>
-			<!-- <br /> -->
+
 			<div class="grid grid-cols-2">
 				<div class="flex justify-between py-1 w-4/6">
 					<p>Perpetuals (Collect funding)</p>
@@ -80,18 +103,17 @@
 						type="range"
 						min="1"
 						max="60"
-						bind:value={$refresh_rate.hz}
+						bind:value={$refresh_rate}
 						class="range range-secondary range-xs w-1/2"
 					/>
 				</div>
-				<!-- </div> -->
 			</div>
 		</div>
-		{#await getFuturesWithSpotMarkets()}
+		{#await futures_with_spot_markets}
 			<div class="flex items-center justify-center h-24">
 				<svg
 					role="status"
-					class="inline w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-orange-600"
+					class="inline w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-purple-600"
 					viewBox="0 0 100 101"
 					fill="none"
 					xmlns="http://www.w3.org/2000/svg"
