@@ -15,24 +15,30 @@ ipsum
 - [ ] Dockerize
 - [ ] "How to use"
 - [ ] "How to build and run"
-- [x] draw UI skeleton
-- [x] simple css work for UI outline
+- [ ] Automated/easy way to push deployments to prod, want to learn this, terraform??
 - [ ] picture per exchange
-- [x] calculate basis trade
-  - [x] info button with explanation (what to short, what to long etc)
 - [ ] Picture per exchange
-- [ ] Template for future/perp data (general for diff exchanges)
 - [ ] Settings
   - [ ] Size of list
   - [ ] Refresh rate
   - [ ] auto refresh on/off
   - [ ] exchange list
   - [ ] show all the same pair from all exchanges or best one
+  - [ ] persist storage between page visits (sessionStorage or smth)
 - [ ] top 25 default
-- [x] ftx
 - [ ] binance
 - [ ] bybit
+- [ ] deribit?
 - [ ] phemex?
+
+## EOD thoughts, do l8r
+begin on settings and save it to sessionStorage.  
+by default all exchanges would be turned on ["ftx","binance"...]  
+send all those with the get request onMount  
+proxy fetches and bundles -> respondes with the templated data type  
+simply render data as normal but switch for logo etc.  
+should probably move refresh rate slider(range) to settings page and have checkbox for on/off outisde settings modal  
+
 
 ## Decisions on UI
 

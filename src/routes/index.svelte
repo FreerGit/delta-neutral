@@ -44,9 +44,7 @@
 	let futures_with_spot_markets = getFuturesWithSpotMarkets();
 
 	function everyTime() {
-		console.log('each 1 second...');
 		futures_with_spot_markets = getFuturesWithSpotMarkets();
-		// invalidate(futuresWithSpotMarkets);
 	}
 	const table_type = writable({ type: 'future' as futureType });
 	const refresh_rate = writable(1);
