@@ -91,7 +91,7 @@
 	onMount(async () => {
 		let [dated, perps] = splitByTradeIdea(propValue);
 		datedFutureTradeRows = dated.sort(
-			(a: rowType, b: rowType) => a.apy < b.apy
+			(a: rowType, b: rowType) => Math.abs(a.apy) < Math.abs(b.apy)
 		);
 		perpTradeRows = perps.sort(
 			(a, b) => Math.abs(a.funding_rate) < Math.abs(b.funding_rate)

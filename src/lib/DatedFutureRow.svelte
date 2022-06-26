@@ -22,10 +22,10 @@
 				</div>
 			</div>
 		</td>
-		<td>{parseFloat(row_info.apy.toFixed(5))}</td>
+		<td>{Math.abs(parseFloat(row_info.apy.toFixed(5)))}</td>
+		<td>{parseFloat(row_info.delta.toFixed(5))}</td>
 		<td>{row_info.fut_price}</td>
 		<td>{row_info.spot_price}</td>
-		<td>{parseFloat(row_info.delta.toFixed(5))}</td>
 		<div class="container py-3">
 			<label for="my-modal-4" class="btn btn-sm btn-outline modal-button"
 				>Details</label
