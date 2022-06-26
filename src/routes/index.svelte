@@ -12,12 +12,13 @@
 	): FutureWithSpot[] {
 		let bundle: FutureWithSpot[] = [];
 		const length = futures.length;
+		console.log(futures);
 		for (let num = 0; num < length; num++) {
 			let future_underlying = futures[num].underlying;
 			let foundSpot = spotMarkets.find((spot: exchangeSpotDataT) => {
 				return spot.underlying == future_underlying;
 			});
-			if (foundSpot !== undefined) {
+			if (foundSpot !== undefined && foundSpot !== null) {
 				bundle.push({
 					spot: foundSpot,
 					future: futures[num]

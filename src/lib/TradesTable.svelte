@@ -6,6 +6,8 @@
 		perpRowType
 	} from 'src/app';
 	import { onMount } from 'svelte';
+	import PerpRow from './PerpRow.svelte';
+	import DatedFutureRow from './DatedFutureRow.svelte';
 	import FtxLogo from '/static/ftx.svg';
 
 	export let propValue: FutureWithSpot[];
@@ -39,7 +41,6 @@
 	): [datedFutureRowType[], perpRowType[]] {
 		let dated_futures: datedFutureRowType[] = [];
 		let perps: perpRowType[] = [];
-		console.log(bundles);
 		Array.from(bundles).forEach((bundle) => {
 			const fut = bundle.future;
 			const spot = bundle.spot;
@@ -61,10 +62,13 @@
 				switch (fut.exchange) {
 					case 'ftx':
 						freq = 'hourly';
+						break;
 					case 'binance':
 						freq = '8 hours';
+						break;
 					case 'bybit':
 						freq = '8 hours';
+						break;
 				}
 				perps.push({
 					exchange: fut.exchange,
@@ -76,7 +80,6 @@
 					trade_setup_info: set_trade_info(bundle)
 				} as perpRowType);
 			} else {
-				console.log(bundle);
 				throw 'Future is not perp or dated';
 			}
 		});
@@ -86,8 +89,13 @@
 	let datedFutureTradeRows: datedFutureRowType[] = [];
 	let perpTradeRows: perpRowType[] = [];
 	onMount(async () => {
-		[datedFutureTradeRows, perpTradeRows] = splitByTradeIdea(propValue);
-		// .sort((a: rowType, b: rowType) => a.apy < b.apy);
+		let [dated, perps] = splitByTradeIdea(propValue);
+		datedFutureTradeRows = dated.sort(
+			(a: rowType, b: rowType) => a.apy < b.apy
+		);
+		perpTradeRows = perps.sort(
+			(a, b) => Math.abs(a.funding_rate) < Math.abs(b.funding_rate)
+		);
 	});
 </script>
 
@@ -99,58 +107,25 @@
 				<th class="bg-secondary">Market</th>
 				{#if perp_or_dated == 'future'}
 					<th class="bg-secondary">Apy</th>
+					<th class="bg-secondary">Δ</th>
 				{:else if perp_or_dated == 'perpetual'}
 					<th class="bg-secondary">Funding rate</th>
+					<th class="bg-secondary">frequency</th>
 				{/if}
 				<th class="bg-secondary">Future price</th>
 				<th class="bg-secondary">Spot price</th>
-				<th class="bg-secondary">Δ</th>
 				<th class="bg-secondary">Trade Info</th>
 			</tr>
 		</thead>
-		{#each datedFutureTradeRows as row}
-			<tbody class="border-b">
-				<tr class="text-center">
-					<td>
-						<div class="flex pl-3 space-x-3">
-							<div class="w-5">
-								{#if row.exchange == 'ftx'}
-									<FtxLogo />
-								{:else if row.exchange == 'binance'}
-									<p>fdafsd</p>
-								{:else if row.exchange == 'bybit'}
-									<p>fdafsd</p>
-								{/if}
-							</div>
-							<div class="items-center">
-								<div class="font-bold">{row.name}</div>
-							</div>
-						</div>
-					</td>
-					<td>{parseFloat(row.apy.toFixed(5))}</td>
-					<td>{row.fut_price}</td>
-					<td>{row.spot_price}</td>
-					<td>{parseFloat(row.delta.toFixed(5))}</td>
-					<div class="container py-3">
-						<label for="my-modal-4" class="btn btn-sm btn-outline modal-button"
-							>Details</label
-						>
-						<input type="checkbox" id="my-modal-4" class="modal-toggle" />
-						<label for="my-modal-4" class="modal cursor-pointer">
-							<label class="modal-box relative" for="">
-								<h3 class="text-lg font-bold">
-									Congratulations random Interner user!
-								</h3>
-								<p class="py-4">
-									You've been selected for a chance to get one year of
-									subscription to use Wikipedia for free!
-								</p>
-							</label>
-						</label>
-					</div>
-				</tr>
-				<!-- row 1 -->
-			</tbody>
-		{/each}
+		<!-- head -->
+		{#if perp_or_dated == 'future'}
+			{#each datedFutureTradeRows as row}
+				<DatedFutureRow row_info={row} />
+			{/each}
+		{:else if perp_or_dated == 'perpetual'}
+			{#each perpTradeRows as row}
+				<PerpRow row_info={row} />
+			{/each}
+		{/if}
 	</table>
 </div>
