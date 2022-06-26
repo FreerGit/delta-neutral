@@ -1,19 +1,16 @@
 <script lang="ts">
-	import type { FutureWithSpot } from 'src/app';
+	import type {
+		datedFutureRowType,
+		futureType,
+		FutureWithSpot,
+		perpRowType
+	} from 'src/app';
 	import { onMount } from 'svelte';
 	import FtxLogo from '/static/ftx.svg';
-	interface rowType {
-		// row_type: string;
-		exchange: string;
-		name: string;
-		expiry?: string;
-		apy: number;
-		fut_price: number;
-		spot_price: number;
-		delta: number;
-		trade_setup_info: string;
-	}
+
 	export let propValue: FutureWithSpot[];
+	export let perp_or_dated: futureType;
+
 	function calc_apy(bundle: FutureWithSpot): [number, number] {
 		const days_in_year = 365.25;
 		const now = new Date(Date.now());
@@ -28,20 +25,28 @@
 			const n = date_days_delta / days_in_year;
 			const apy = ((bundle.future.price / spot_price - 1) / n) * 100;
 			return [price_percent_change, apy];
-		} else if (bundle.future.type == 'perpetual' && !bundle.future.expiry) {
-			return [0, 0];
-			// return n;
 		} else {
-			throw 'Futures contract is not of type future nor perpetual';
+			throw 'Not an dated future or expiry did not exist';
 		}
 	}
-	function splitByTradeIdea(bundle: FutureWithSpot[]): rowType[] {
-		const rows = bundle.map((bundle: FutureWithSpot): rowType => {
+
+	function set_trade_info(bundle: FutureWithSpot): string {
+		return 'fdsfsd';
+	}
+
+	function splitByTradeIdea(
+		bundles: FutureWithSpot[]
+	): [datedFutureRowType[], perpRowType[]] {
+		let dated_futures: datedFutureRowType[] = [];
+		let perps: perpRowType[] = [];
+		console.log(bundles);
+		Array.from(bundles).forEach((bundle) => {
 			const fut = bundle.future;
 			const spot = bundle.spot;
-			const [delta, apy] = calc_apy(bundle);
-			if (bundle.future.type == 'future') {
-				return {
+
+			if (fut.type == 'future') {
+				const [delta, apy] = calc_apy(bundle);
+				dated_futures.push({
 					exchange: fut.exchange,
 					name: fut.name,
 					expiry: fut.expiry,
@@ -49,28 +54,40 @@
 					fut_price: fut.price,
 					spot_price: spot.price,
 					delta: delta,
-					trade_setup_info: 'fdsf'
-				};
+					trade_setup_info: set_trade_info(bundle)
+				} as datedFutureRowType);
+			} else if (fut.type == 'perpetual') {
+				let freq = 'hourly';
+				switch (fut.exchange) {
+					case 'ftx':
+						freq = 'hourly';
+					case 'binance':
+						freq = '8 hours';
+					case 'bybit':
+						freq = '8 hours';
+				}
+				perps.push({
+					exchange: fut.exchange,
+					name: fut.name,
+					funding_rate: fut.funding_rate,
+					frequency: freq,
+					fut_price: fut.price,
+					spot_price: spot.price,
+					trade_setup_info: set_trade_info(bundle)
+				} as perpRowType);
 			} else {
-				return {
-					exchange: fut.exchange,
-					name: fut.name,
-					expiry: fut.expiry,
-					apy: apy,
-					fut_price: fut.price,
-					spot_price: spot.price,
-					delta: delta,
-					trade_setup_info: 'fdsf'
-				};
+				console.log(bundle);
+				throw 'Future is not perp or dated';
 			}
 		});
-		return rows;
+
+		return [dated_futures, perps];
 	}
-	let allTradeRows: rowType[] = [];
+	let datedFutureTradeRows: datedFutureRowType[] = [];
+	let perpTradeRows: perpRowType[] = [];
 	onMount(async () => {
-		allTradeRows = splitByTradeIdea(propValue).sort(
-			(a: rowType, b: rowType) => a.apy < b.apy
-		);
+		[datedFutureTradeRows, perpTradeRows] = splitByTradeIdea(propValue);
+		// .sort((a: rowType, b: rowType) => a.apy < b.apy);
 	});
 </script>
 
@@ -80,14 +97,18 @@
 		<thead>
 			<tr class="text-center">
 				<th class="bg-secondary">Market</th>
-				<th class="bg-secondary">apy</th>
+				{#if perp_or_dated == 'future'}
+					<th class="bg-secondary">Apy</th>
+				{:else if perp_or_dated == 'perpetual'}
+					<th class="bg-secondary">Funding rate</th>
+				{/if}
 				<th class="bg-secondary">Future price</th>
 				<th class="bg-secondary">Spot price</th>
 				<th class="bg-secondary">Δ</th>
 				<th class="bg-secondary">Trade Info</th>
 			</tr>
 		</thead>
-		{#each allTradeRows as row}
+		{#each datedFutureTradeRows as row}
 			<tbody class="border-b">
 				<tr class="text-center">
 					<td>

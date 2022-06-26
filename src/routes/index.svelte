@@ -2,6 +2,7 @@
 	import type {
 		exchangeFutureDataT,
 		exchangeSpotDataT,
+		futureType,
 		FutureWithSpot
 	} from 'src/app';
 	import TradesTable from '$lib/TradesTable.svelte';
@@ -36,10 +37,34 @@
 		const bundled = bundleFutureWithSpot(futures, spotMarkets);
 		return bundled;
 	}
+
+	import { writable } from 'svelte/store';
+
+	const table_type = writable({ type: 'future' as futureType });
 </script>
 
 <div class="h-screen w-full">
 	<div class="p-16">
+		<div class="pb-4">
+			Dated Futures (Basis trade)
+			<input
+				type="radio"
+				name="radio-3"
+				class="radio radio-secondary"
+				bind:group={$table_type.type}
+				value={'future'}
+				checked
+			/>
+			<br />
+			Collect funding (Perpetuals)
+			<input
+				type="radio"
+				name="radio-3"
+				class="radio radio-secondary pb-2"
+				bind:group={$table_type.type}
+				value={'perpetual'}
+			/>
+		</div>
 		{#await getFuturesWithSpotMarkets()}
 			<div class="flex items-center justify-center h-24">
 				<svg
@@ -60,7 +85,10 @@
 				</svg>
 			</div>
 		{:then futuresWithSpotMarkets}
-			<TradesTable propValue={futuresWithSpotMarkets} />
+			<TradesTable
+				perp_or_dated={$table_type.type}
+				propValue={futuresWithSpotMarkets}
+			/>
 		{:catch error}
 			<p style="">{error}</p>
 		{/await}

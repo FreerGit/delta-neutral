@@ -109,6 +109,7 @@ export interface exchangeFutureDataT {
 	price: number;
 	expiry: string | undefined;
 	underlying: string;
+	funding_rate: number | null;
 }
 
 export interface exchangeSpotDataT {
@@ -116,4 +117,34 @@ export interface exchangeSpotDataT {
 	name: string;
 	price: number;
 	underlying: string;
+}
+
+export interface fundingRate {
+	future: string,
+	rate: number,
+	time: string,
+}
+
+interface datedFutureRowType {
+	// row_type: string;
+	exchange: string;
+	name: string;
+	expiry: string;
+	apy: number;
+	fut_price: number;
+	spot_price: number;
+	delta: number;
+	trade_setup_info: string;
+}
+
+export type fundingFrequency = "hourly" | "8 hours"
+
+interface perpRowType {
+	exchange: string;
+	name: string;
+	funding_rate: number;
+	frequency: fundingFrequency;
+	fut_price: number;
+	spot_price: number;
+	trade_setup_info: string;
 }
