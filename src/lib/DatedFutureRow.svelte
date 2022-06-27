@@ -2,6 +2,7 @@
 	import type { datedFutureRowType } from 'src/app';
 	import FtxLogo from '/static/ftx.svg';
 	import BinanceLogo from '/static/binance.svg';
+	import BybitLogo from '/static/bybit.svg';
 	export let row_info: datedFutureRowType;
 </script>
 
@@ -15,7 +16,7 @@
 					{:else if row_info.exchange == 'binance'}
 						<BinanceLogo />
 					{:else if row_info.exchange == 'bybit'}
-						<p>fdafsd</p>
+						<BybitLogo />
 					{/if}
 				</div>
 				<div class="items-center">
