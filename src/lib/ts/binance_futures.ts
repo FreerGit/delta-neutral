@@ -1,28 +1,13 @@
-import { Result } from 'postcss';
 import type {
-	binanceFutureMarket,
 	binanceMarket,
-	binancePerpMarket,
-	binanceSpotMarket,
 	exchangeFutureDataT,
-	exchangeSpotDataT,
 } from 'src/app';
-// export interface exchangeFutureDataT {
-// 	exchange: exchangeType;
-// 	name: string;
-// 	type: futureType;
-// 	price: number;
-// 	expiry: string | undefined;
-// 	underlying: string;
-// 	funding_rate: number | null;
-// }
 
 function convert_binance_shitty_expiry_string_to_timestamp(expiry: string) {
 	return Date.parse(
 		("20" + expiry).slice(0, 4) + "-" + expiry.slice(2, 4) + "-" + expiry.slice(4, 6)
 	);
 }
-
 export async function get_binance_futs() {
 	const [dated_resp, perp_resp] = await Promise.all([
 		fetch('https://www.binance.com/dapi/v1/premiumIndex'),

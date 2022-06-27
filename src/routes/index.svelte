@@ -4,7 +4,7 @@
 	import { writable } from 'svelte/store';
 	import { onMount } from 'svelte';
 	const settings = writable({
-		exchanges: { binance: true, bybit: false, ftx: true },
+		exchanges: { binance: true, bybit: true, ftx: true },
 		refresh_rate: 1
 	} as settings);
 

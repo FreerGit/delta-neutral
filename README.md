@@ -16,7 +16,6 @@ ipsum
 - [ ] "How to use"
 - [ ] "How to build and run"
 - [ ] Automated/easy way to push deployments to prod, want to learn this, terraform??
-- [x] picture per exchange
 - [ ] Settings
   - [ ] Size of list
   - [ ] Refresh rate
@@ -24,8 +23,6 @@ ipsum
   - [ ] exchange list
   - [ ] show all the same pair from all exchanges or best one
   - [ ] persist storage between page visits (sessionStorage or smth)
-- [ ] top 25 default
-- [x] binance
 - [ ] bybit
 - [ ] deribit?
 - [ ] phemex?

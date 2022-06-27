@@ -121,6 +121,20 @@ interface binanceMarket {
 	time: number;
 }
 
+export interface bybitResp {
+	result: bybitmarket[]
+}
+
+export interface bybitMarket {
+	symbol: string;
+	mark_price: string;
+	index_price: string;
+	funding_rate: string;
+	next_funding_time: string;
+	delivery_time: string;
+}
+
+
 interface settings {
 	refresh_rate: number;
 	exchanges: {
@@ -133,3 +147,5 @@ interface settings {
 interface marketBundle {
 	futures: exchangeFutureDataT[];
 }
+
+

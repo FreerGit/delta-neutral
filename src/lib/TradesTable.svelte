@@ -9,10 +9,17 @@
 	import { onMount } from 'svelte';
 	import PerpRow from './PerpRow.svelte';
 	import DatedFutureRow from './DatedFutureRow.svelte';
+	import { writable } from 'svelte/store';
 
-	export let propValue: marketBundle[];
+	export let propValue: marketBundle;
 
 	export let perp_or_dated: futureType;
+
+	let show_perp_rows = writable(25);
+
+	function render_more() {
+		show_perp_rows.update((n) => n + 25);
+	}
 
 	function calc_apy(bundle: exchangeFutureDataT): [number, number] {
 		const days_in_year = 365.25;
@@ -93,7 +100,7 @@
 </script>
 
 <div class="overflow-hidden h-full w-full py-2">
-	<table class="table w-full">
+	<table class="flex table w-full">
 		<!-- head -->
 		<thead>
 			<tr class="text-center">
@@ -116,9 +123,16 @@
 				<DatedFutureRow row_info={row} />
 			{/each}
 		{:else if perp_or_dated == 'perpetual'}
-			{#each perpTradeRows as row}
+			{#each perpTradeRows.slice(0, $show_perp_rows) as row}
 				<PerpRow row_info={row} />
 			{/each}
 		{/if}
 	</table>
+	{#if perp_or_dated == 'perpetual'}
+		<div class="flex items-center justify-center py-6">
+			<button class="btn btn-outline btn-secondary" on:click={render_more}
+				>Load more ...</button
+			>
+		</div>
+	{/if}
 </div>
