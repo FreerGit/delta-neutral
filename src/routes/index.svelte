@@ -1,53 +1,19 @@
 <script lang="ts">
-	import type {
-		exchangeFutureDataT,
-		exchangeSpotDataT,
-		futureType,
-		FutureWithSpot
-	} from 'src/app';
+	import type { futureType, marketBundle, settings } from 'src/app';
 	import TradesTable from '$lib/TradesTable.svelte';
-	function bundleFutureWithSpot(
-		futures: [exchangeFutureDataT],
-		spotMarkets: [exchangeSpotDataT]
-	): FutureWithSpot[] {
-		let bundle: FutureWithSpot[] = [];
-		const length = futures.length;
-		for (let num = 0; num < length; num++) {
-			let future_underlying = futures[num].underlying;
-			let foundSpot = spotMarkets.find((spot: exchangeSpotDataT) => {
-				return spot.underlying == future_underlying;
-			});
-			if (foundSpot !== undefined && foundSpot !== null) {
-				bundle.push({
-					spot: foundSpot,
-					future: futures[num]
-				});
-			}
-		}
-		return bundle;
-	}
-
-	async function getFuturesWithSpotMarkets(): Promise<FutureWithSpot[]> {
-		let [fut_resp, spot_resp] = await Promise.all([
-			fetch('ftx/futures.json'),
-			fetch('ftx/spotMarkets.json')
-		]);
-		const futures: [exchangeFutureDataT] = await fut_resp.json();
-		const spotMarkets: [exchangeSpotDataT] = await spot_resp.json();
-		const bundled = bundleFutureWithSpot(futures, spotMarkets);
-		return bundled;
-	}
-
 	import { writable } from 'svelte/store';
 	import { onMount } from 'svelte';
+	const settings = writable({
+		exchanges: { binance: true, bybit: false, ftx: true },
+		refresh_rate: 1
+	} as settings);
 
-	let futures_with_spot_markets = getFuturesWithSpotMarkets();
+	let future_bundles = getFutureBundles($settings);
 
 	function everyTime() {
-		futures_with_spot_markets = getFuturesWithSpotMarkets();
+		future_bundles = getFutureBundles($settings);
 	}
 	const table_type = writable({ type: 'future' as futureType });
-	const refresh_rate = writable(1);
 	const milliseconds_per_minute = 60000;
 	let refresh_interval_f: any;
 
@@ -56,13 +22,22 @@
 			clearInterval(refresh_interval_f);
 			refresh_interval_f = setInterval(
 				everyTime,
-				$refresh_rate * milliseconds_per_minute
+				$settings.refresh_rate * milliseconds_per_minute
 			);
 		};
-		refresh_rate.subscribe(() => {
+		settings.subscribe(() => {
 			update_timer();
 		});
 	});
+
+	async function getFutureBundles(settings: settings): Promise<marketBundle> {
+		let bundle = await fetch(
+			`exchanges/market_bundle.json?binance=${settings.exchanges.binance}` +
+				`&bybit=${settings.exchanges.bybit}&ftx=${settings.exchanges.ftx}`
+		);
+		const bundled: marketBundle = await bundle.json();
+		return bundled;
+	}
 </script>
 
 <div class="h-screen w-full">
@@ -81,7 +56,7 @@
 					/>
 				</div>
 				<p class="flex justify-end pr-10">
-					refresh rate: {$refresh_rate}m
+					refresh rate: {$settings.refresh_rate}m
 				</p>
 			</div>
 
@@ -101,13 +76,13 @@
 						type="range"
 						min="1"
 						max="60"
-						bind:value={$refresh_rate}
+						bind:value={$settings.refresh_rate}
 						class="range range-secondary range-xs w-1/2"
 					/>
 				</div>
 			</div>
 		</div>
-		{#await futures_with_spot_markets}
+		{#await future_bundles}
 			<div class="flex items-center justify-center h-24">
 				<svg
 					role="status"
@@ -126,11 +101,8 @@
 					/>
 				</svg>
 			</div>
-		{:then futuresWithSpotMarkets}
-			<TradesTable
-				perp_or_dated={$table_type.type}
-				propValue={futuresWithSpotMarkets}
-			/>
+		{:then bundled}
+			<TradesTable perp_or_dated={$table_type.type} propValue={bundled} />
 		{:catch error}
 			<p style="">{error}</p>
 		{/await}

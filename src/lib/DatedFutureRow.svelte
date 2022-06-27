@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { datedFutureRowType } from 'src/app';
 	import FtxLogo from '/static/ftx.svg';
+	import BinanceLogo from '/static/binance.svg';
 	export let row_info: datedFutureRowType;
 </script>
 
@@ -12,7 +13,7 @@
 					{#if row_info.exchange == 'ftx'}
 						<FtxLogo />
 					{:else if row_info.exchange == 'binance'}
-						<p>fdafsd</p>
+						<BinanceLogo />
 					{:else if row_info.exchange == 'bybit'}
 						<p>fdafsd</p>
 					{/if}
@@ -24,8 +25,16 @@
 		</td>
 		<td>{Math.abs(parseFloat(row_info.apy.toFixed(5)))}</td>
 		<td>{parseFloat(row_info.delta.toFixed(5))}</td>
-		<td>{row_info.fut_price}</td>
-		<td>{row_info.spot_price}</td>
+		<td
+			>{row_info.mark > 100
+				? row_info.mark.toFixed(2)
+				: row_info.mark.toFixed(5)}</td
+		>
+		<td
+			>{row_info.index > 100
+				? row_info.index.toFixed(2)
+				: row_info.index.toFixed(5)}</td
+		>
 		<div class="container py-3">
 			<label for={row_info.name} class="btn btn-sm btn-outline modal-button"
 				>Details</label

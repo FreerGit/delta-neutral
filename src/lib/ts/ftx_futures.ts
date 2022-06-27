@@ -1,6 +1,10 @@
-import type { exchangeFutureDataT, fundingRate, FuturesMarket } from 'src/app';
+import type {
+	exchangeFutureDataT,
+	fundingRate,
+	ftxFuturesMarket
+} from 'src/app';
 
-export async function get() {
+export async function get_ftx_futs() {
 	const futures = fetch('https://ftx.com/api/futures');
 	const rates = fetch('https://ftx.com/api/funding_rates');
 	const [f_resp, r_resp] = await Promise.all([futures, rates]);
@@ -9,15 +13,15 @@ export async function get() {
 
 	if (f_json.success && r_json.success) {
 		const perp_and_dated: exchangeFutureDataT[] = f_json.result.reduce(
-			(result: exchangeFutureDataT[], fut: FuturesMarket) => {
+			(result: exchangeFutureDataT[], fut: ftxFuturesMarket) => {
 				if (fut.type == 'perpetual' || fut.type == 'future') {
 					const obj: exchangeFutureDataT = {
 						exchange: 'ftx',
 						name: fut.name,
 						type: fut.type,
-						price: fut.mark,
+						mark: fut.mark,
+						index: fut.index,
 						expiry: fut.expiry,
-						underlying: fut.underlying,
 						funding_rate: null
 					};
 					if (fut.type == 'perpetual') {
@@ -36,7 +40,6 @@ export async function get() {
 			},
 			[]
 		);
-		return { body: perp_and_dated };
+		return perp_and_dated;
 	}
-	return Response.error();
 }

@@ -16,8 +16,7 @@ ipsum
 - [ ] "How to use"
 - [ ] "How to build and run"
 - [ ] Automated/easy way to push deployments to prod, want to learn this, terraform??
-- [ ] picture per exchange
-- [ ] Picture per exchange
+- [x] picture per exchange
 - [ ] Settings
   - [ ] Size of list
   - [ ] Refresh rate
@@ -26,19 +25,19 @@ ipsum
   - [ ] show all the same pair from all exchanges or best one
   - [ ] persist storage between page visits (sessionStorage or smth)
 - [ ] top 25 default
-- [ ] binance
+- [x] binance
 - [ ] bybit
 - [ ] deribit?
 - [ ] phemex?
 
 ## EOD thoughts, do l8r
+
 begin on settings and save it to sessionStorage.  
 by default all exchanges would be turned on ["ftx","binance"...]  
 send all those with the get request onMount  
 proxy fetches and bundles -> respondes with the templated data type  
 simply render data as normal but switch for logo etc.  
-should probably move refresh rate slider(range) to settings page and have checkbox for on/off outisde settings modal  
-
+should probably move refresh rate slider(range) to settings page and have checkbox for on/off outisde settings modal
 
 ## Decisions on UI
 

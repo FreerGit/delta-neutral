@@ -12,7 +12,7 @@ declare namespace App {
 export type FuturesMarketType = 'perpetual' | 'future' | 'prediction' | 'move';
 export type FuturesMarketGroup = 'perpetual' | 'quarterly' | 'prediction';
 
-export interface FuturesMarket {
+export interface ftxFuturesMarket {
 	name: string;
 	underlying: string;
 	description: string;
@@ -64,41 +64,6 @@ export enum QuoteCurrency {
 	Usdt = 'USDT'
 }
 
-export interface spotMarket {
-	name: string;
-	enabled: boolean;
-	postOnly: boolean;
-	priceIncrement: number;
-	sizeIncrement: number;
-	minProvideSize: number;
-	last?: number;
-	bid?: number;
-	ask?: number;
-	price?: number;
-	type: marketType;
-	futureType: string;
-	baseCurrency: string;
-	isEtfMarket: boolean;
-	quoteCurrency?: QuoteCurrency;
-	underlying: string;
-	restricted: boolean;
-	highLeverageFeeExempt: boolean;
-	largeOrderThreshold: number;
-	change1h: number;
-	change24h: number;
-	changeBod: number;
-	quoteVolume24h: number;
-	volumeUsd24h: number;
-	priceHigh24h: number;
-	priceLow24h: number;
-	tokenizedEquity?: boolean;
-}
-
-export interface FutureWithSpot {
-	future: exchangeFutureDataT;
-	spot: exchangeSpotDataT;
-}
-
 export type exchangeType = 'ftx' | 'binance' | 'bybit';
 export type futureType = 'perpetual' | 'future';
 
@@ -106,17 +71,10 @@ export interface exchangeFutureDataT {
 	exchange: exchangeType;
 	name: string;
 	type: futureType;
-	price: number;
+	mark: number;
+	index: number
 	expiry: string | undefined;
-	underlying: string;
 	funding_rate: number | null;
-}
-
-export interface exchangeSpotDataT {
-	exchange: exchangeType;
-	name: string;
-	price: number;
-	underlying: string;
 }
 
 export interface fundingRate {
@@ -131,8 +89,8 @@ interface datedFutureRowType {
 	name: string;
 	expiry: string;
 	apy: number;
-	fut_price: number;
-	spot_price: number;
+	mark: number;
+	index: number;
 	delta: number;
 }
 
@@ -143,6 +101,35 @@ interface perpRowType {
 	name: string;
 	funding_rate: number;
 	frequency: fundingFrequency;
-	fut_price: number;
-	spot_price: number;
+	mark: number;
+	index: number;
+}
+
+interface binanceSpotMarket {
+	symbol: string;
+	price: number;
+}
+
+interface binanceMarket {
+	symbol: string;
+	markPrice: string;
+	indexPrice: string;
+	estimatedSettlePrice: string;
+	lastFundingRate: string;
+	interestRate: string;
+	nextFundingTime: number;
+	time: number;
+}
+
+interface settings {
+	refresh_rate: number;
+	exchanges: {
+		binance: boolean;
+		ftx: boolean;
+		bybit: boolean;
+	};
+}
+
+interface marketBundle {
+	futures: exchangeFutureDataT[];
 }
