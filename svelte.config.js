@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-auto';
+import adapter from '@sveltejs/adapter-node';
 import preprocess from 'svelte-preprocess';
 import svg from '@poppanator/sveltekit-svg';
 
@@ -13,7 +13,7 @@ const config = {
 	],
 
 	kit: {
-		adapter: adapter(),
+		adapter: adapter({ out: 'build' }),
 		vite: {
 			// Options are optional
 			plugins: [svg()]

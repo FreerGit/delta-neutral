@@ -2,19 +2,30 @@
 
 Simple UI to detect basis trades and oppurtunities to collect funding.
 
-## How to use
-
-lorum
-
 ## How to build and run
 
-ipsum
+Either run with docker or locally:
 
+### Docker
+While being in the root directory (delta-neutral)
+```
+docker build . -t <name>
+docker run -p 3000:3000 -d <name>
+```
+A docker daemon is now running, hit localhost:3000 in you browser.
+
+### Without docker
+simply run:
+```
+npm i
+npm run build
+npm run preview
+```
 ## TODO
 
-- [ ] Dockerize
-- [ ] "How to use"
-- [ ] "How to build and run"
+- [X] Dockerize
+- [X] "How to use"
+- [X] "How to build and run"
 - [ ] Automated/easy way to push deployments to prod, want to learn this, terraform??
 - [ ] Settings
   - [ ] Size of list
@@ -26,27 +37,3 @@ ipsum
 - [ ] deribit?
 - [ ] phemex?
 - [ ] speed up, use flamegraph
-
-## EOD thoughts, do l8r
-
-begin on settings and save it to sessionStorage.  
-by default all exchanges would be turned on ["ftx","binance"...]  
-send all those with the get request onMount  
-proxy fetches and bundles -> respondes with the templated data type  
-simply render data as normal but switch for logo etc.  
-should probably move refresh rate slider(range) to settings page and have checkbox for on/off outisde settings modal
-
-## Decisions on UI
-
-DaisyUI - halloween theme
-table -> "Table with visual elements"
-range -> "primary color" (for refresh rate)
-checkbox -> "primary color" (to choose boolean, exchanges etc)
-toggle -> w/e (refresh or no)
-tooltip -> "hover" to explain all concepts etc
-
-on futures with spot:
-Basis: picture of exchange, name, expiry, apy, fut price, spot price, delta, trade_setup(hover)
-
-on perp with spot:
-Funding: picture of exchange, name, apy, perp price, spot price, delta, trade_setup(hover)
