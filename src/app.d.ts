@@ -72,7 +72,7 @@ export interface exchangeFutureDataT {
 	name: string;
 	type: futureType;
 	mark: number;
-	index: number
+	index: number;
 	expiry: string | undefined;
 	funding_rate: number | null;
 }
@@ -122,7 +122,7 @@ interface binanceMarket {
 }
 
 export interface bybitResp {
-	result: bybitmarket[]
+	result: bybitmarket[];
 }
 
 export interface bybitMarket {
@@ -133,7 +133,6 @@ export interface bybitMarket {
 	next_funding_time: string;
 	delivery_time: string;
 }
-
 
 interface settings {
 	refresh_rate: number;
@@ -147,5 +146,3 @@ interface settings {
 interface marketBundle {
 	futures: exchangeFutureDataT[];
 }
-
-

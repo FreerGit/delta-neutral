@@ -1,7 +1,6 @@
 <script lang="ts">
-	import type { futureType, marketBundle, settings } from 'src/app';
+	import type { marketBundle } from 'src/app';
 	import TradesTable from '$lib/TradesTable.svelte';
-	import { writable } from 'svelte/store';
 	import { onMount } from 'svelte';
 	import SettingsModal from '$lib/SettingsModal.svelte';
 	import { global_settings } from '$lib/stores/settings';
@@ -23,7 +22,7 @@
 				$global_settings.refresh_rate * milliseconds_per_minute
 			);
 		};
-		global_settings.subscribe((new_settings: settings) => {
+		global_settings.subscribe(() => {
 			update_timer();
 		});
 	});
