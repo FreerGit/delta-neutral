@@ -57,23 +57,27 @@
 					index: bundle.index,
 					delta: delta
 				} as datedFutureRowType);
-			} else if (bundle.type == 'perpetual') {
+			} else if (bundle.type == 'perpetual' && bundle.funding_rate !== null) {
 				let freq = 'hourly';
+				let normalized_rate;
 				switch (bundle.exchange) {
 					case 'ftx':
 						freq = 'hourly';
+						normalized_rate = bundle.funding_rate * 24;
 						break;
 					case 'binance':
 						freq = '8 hours';
+						normalized_rate = bundle.funding_rate * 3;
 						break;
 					case 'bybit':
 						freq = '8 hours';
+						normalized_rate = bundle.funding_rate * 3;
 						break;
 				}
 				perps.push({
 					exchange: bundle.exchange,
 					name: bundle.name,
-					funding_rate: bundle.funding_rate,
+					funding_rate: normalized_rate,
 					frequency: freq,
 					mark: bundle.mark,
 					index: bundle.index
@@ -109,7 +113,7 @@
 					<th class="bg-secondary">Apy</th>
 					<th class="bg-secondary">Δ</th>
 				{:else if perp_or_dated == 'perpetual'}
-					<th class="bg-secondary">Funding rate</th>
+					<th class="bg-secondary">Funding rate (24h)</th>
 					<th class="bg-secondary">frequency</th>
 				{/if}
 				<th class="bg-secondary">Future price</th>

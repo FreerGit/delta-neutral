@@ -24,7 +24,7 @@
 				</div>
 			</div>
 		</td>
-		<td>{parseFloat(row_info.funding_rate.toFixed(9))}</td>
+		<td>{parseFloat((row_info.funding_rate * 100).toFixed(9))}%</td>
 		<td>{row_info.frequency}</td>
 		<td
 			>{row_info.mark > 100
