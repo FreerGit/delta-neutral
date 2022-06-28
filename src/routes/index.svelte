@@ -3,17 +3,15 @@
 	import TradesTable from '$lib/TradesTable.svelte';
 	import { writable } from 'svelte/store';
 	import { onMount } from 'svelte';
-	const settings = writable({
-		exchanges: { binance: true, bybit: true, ftx: true },
-		refresh_rate: 1
-	} as settings);
+	import SettingsModal from '$lib/SettingsModal.svelte';
+	import { global_settings } from '$lib/stores/settings';
 
-	let future_bundles = getFutureBundles($settings);
+	let future_bundles = getFutureBundles();
 
 	function everyTime() {
-		future_bundles = getFutureBundles($settings);
+		future_bundles = getFutureBundles();
 	}
-	const table_type = writable({ type: 'future' as futureType });
+
 	const milliseconds_per_minute = 60000;
 	let refresh_interval_f: any;
 
@@ -22,18 +20,18 @@
 			clearInterval(refresh_interval_f);
 			refresh_interval_f = setInterval(
 				everyTime,
-				$settings.refresh_rate * milliseconds_per_minute
+				$global_settings.refresh_rate * milliseconds_per_minute
 			);
 		};
-		settings.subscribe(() => {
+		global_settings.subscribe((new_settings: settings) => {
 			update_timer();
 		});
 	});
 
-	async function getFutureBundles(settings: settings): Promise<marketBundle> {
+	async function getFutureBundles(): Promise<marketBundle> {
 		let bundle = await fetch(
-			`exchanges/market_bundle.json?binance=${settings.exchanges.binance}` +
-				`&bybit=${settings.exchanges.bybit}&ftx=${settings.exchanges.ftx}`
+			`exchanges/market_bundle.json?binance=${$global_settings.exchanges.binance}` +
+				`&bybit=${$global_settings.exchanges.bybit}&ftx=${$global_settings.exchanges.ftx}`
 		);
 		const bundled: marketBundle = await bundle.json();
 		return bundled;
@@ -42,45 +40,8 @@
 
 <div class="h-screen w-full">
 	<div class="p-16">
-		<div class="grid justify-items-stretch">
-			<div class="grid grid-cols-2">
-				<div class="flex justify-between py-1 w-4/6">
-					<p class="col-xs-2">Dated Futures (Basis trade)</p>
-					<input
-						type="radio"
-						name="radio-3"
-						class="radio radio-secondary pb-2"
-						bind:group={$table_type.type}
-						value={'future'}
-						checked
-					/>
-				</div>
-				<p class="flex justify-end pr-10">
-					refresh rate: {$settings.refresh_rate}m
-				</p>
-			</div>
-
-			<div class="grid grid-cols-2">
-				<div class="flex justify-between py-1 w-4/6">
-					<p>Perpetuals (Collect funding)</p>
-					<input
-						type="radio"
-						name="radio-3"
-						class="radio radio-secondary"
-						bind:group={$table_type.type}
-						value={'perpetual'}
-					/>
-				</div>
-				<div class="flex justify-end py-2">
-					<input
-						type="range"
-						min="1"
-						max="60"
-						bind:value={$settings.refresh_rate}
-						class="range range-secondary range-xs w-1/2"
-					/>
-				</div>
-			</div>
+		<div class="flex justify-start">
+			<SettingsModal />
 		</div>
 		{#await future_bundles}
 			<div class="flex items-center justify-center h-24">
@@ -102,7 +63,7 @@
 				</svg>
 			</div>
 		{:then bundled}
-			<TradesTable perp_or_dated={$table_type.type} propValue={bundled} />
+			<TradesTable perp_or_dated={$global_settings.type} propValue={bundled} />
 		{:catch error}
 			<p style="">{error}</p>
 		{/await}

@@ -18,14 +18,14 @@ ipsum
 - [ ] Automated/easy way to push deployments to prod, want to learn this, terraform??
 - [ ] Settings
   - [ ] Size of list
-  - [ ] Refresh rate
+  - [X] Refresh rate
   - [ ] auto refresh on/off
-  - [ ] exchange list
+  - [X] exchange list
   - [ ] show all the same pair from all exchanges or best one
-  - [ ] persist storage between page visits (sessionStorage or smth)
-- [ ] bybit
+  - [X] persist storage between page visits (sessionStorage or smth)
 - [ ] deribit?
 - [ ] phemex?
+- [ ] speed up, use flamegraph
 
 ## EOD thoughts, do l8r
 
