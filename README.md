@@ -2,6 +2,10 @@
 
 Simple UI to detect basis trades and oppurtunities to collect funding.
 
+## WATCH OUT
+Since people have been forking/starring/using repository:
+USE ARE YOUR OWN RISK, CAN BE BUGS, NOT FINANCIAL ADVISE ETC ETC. NO SUCH THING AS RISK FREE, DYOR.
+
 ## How to build and run
 
 Either run with docker or locally:
