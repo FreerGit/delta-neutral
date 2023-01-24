@@ -12,41 +12,6 @@ declare namespace App {
 export type FuturesMarketType = 'perpetual' | 'future' | 'prediction' | 'move';
 export type FuturesMarketGroup = 'perpetual' | 'quarterly' | 'prediction';
 
-export interface ftxFuturesMarket {
-	name: string;
-	underlying: string;
-	description: string;
-	type: FuturesMarketType;
-	expiry: undefined | string;
-	perpetual: boolean;
-	expired: false;
-	enabled: true;
-	postOnly: false;
-	priceIncrement: number;
-	sizeIncrement: number;
-	last: number;
-	bid: number;
-	ask: number;
-	index: number;
-	mark: number;
-	imfFactor: number;
-	lowerBound: number;
-	upperBound: number;
-	underlyingDescription: string;
-	expiryDescription: string;
-	moveStart: null;
-	marginPrice: number;
-	positionLimitWeight: number;
-	group: FuturesMarketGroup;
-	change1h: number;
-	change24h: number;
-	changeBod: number;
-	volumeUsd24h: number;
-	volume: number;
-	openInterest: number;
-	openInterestUsd: number;
-}
-
 export enum marketType {
 	Future = 'future',
 	Spot = 'spot'
@@ -64,7 +29,7 @@ export enum QuoteCurrency {
 	Usdt = 'USDT'
 }
 
-export type exchangeType = 'ftx' | 'binance' | 'bybit';
+export type exchangeType = 'binance' | 'bybit';
 export type futureType = 'perpetual' | 'future';
 
 export interface exchangeFutureDataT {
@@ -138,7 +103,6 @@ interface settings {
 	refresh_rate: number;
 	exchanges: {
 		binance: boolean;
-		ftx: boolean;
 		bybit: boolean;
 	};
 }

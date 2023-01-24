@@ -23,19 +23,6 @@
 					class="range range-secondary range-xs"
 				/>
 			</div>
-			<!-- FTX -->
-			<div>
-				<div class="form-control">
-					<label class="cursor-pointer label">
-						<span class="label-text">Data from FTX:</span>
-						<input
-							type="checkbox"
-							class="checkbox checkbox-secondary"
-							bind:checked={$global_settings.exchanges.ftx}
-						/>
-					</label>
-				</div>
-			</div>
 			<!-- BYBIT -->
 			<div>
 				<div class="form-control">

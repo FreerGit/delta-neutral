@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { perpRowType } from 'src/app';
-	import FtxLogo from '/static/ftx.svg';
 	import BinanceLogo from '/static/binance.svg';
 	import BybitLogo from '/static/bybit.svg';
 	export let row_info: perpRowType;
@@ -11,12 +10,10 @@
 		<td>
 			<div class="flex pl-3 space-x-3">
 				<div class="flex w-5 justify-center">
-					{#if row_info.exchange == 'ftx'}
-						<FtxLogo />
-					{:else if row_info.exchange == 'binance'}
+					{#if row_info.exchange == 'binance'}
 						<BinanceLogo />
 					{:else if row_info.exchange == 'bybit'}
-						<p><BybitLogo /></p>
+						<BybitLogo />
 					{/if}
 				</div>
 				<div class="items-center">

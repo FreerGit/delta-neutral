@@ -30,7 +30,7 @@
 	async function getFutureBundles(): Promise<marketBundle> {
 		let bundle = await fetch(
 			`exchanges/market_bundle.json?binance=${$global_settings.exchanges.binance}` +
-				`&bybit=${$global_settings.exchanges.bybit}&ftx=${$global_settings.exchanges.ftx}`
+				`&bybit=${$global_settings.exchanges.bybit}`
 		);
 		const bundled: marketBundle = await bundle.json();
 		return bundled;

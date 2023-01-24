@@ -9,7 +9,7 @@ export const global_settings = writable(
 		? JSON.parse(local_settings)
 		: ({
 				type: 'future' as futureType,
-				exchanges: { binance: true, bybit: true, ftx: true },
+				exchanges: { binance: true, bybit: true},
 				refresh_rate: 10
 		  } as settings)
 );

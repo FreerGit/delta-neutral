@@ -61,10 +61,6 @@
 				let freq = 'hourly';
 				let normalized_rate;
 				switch (bundle.exchange) {
-					case 'ftx':
-						freq = 'hourly';
-						normalized_rate = bundle.funding_rate * 24;
-						break;
 					case 'binance':
 						freq = '8 hours';
 						normalized_rate = bundle.funding_rate * 3;
